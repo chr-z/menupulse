@@ -79,10 +79,20 @@ test('buildShareLink round-trips page data', () => {
   assert.deepEqual(back, data);
 });
 
-test('formatPrice renders BRL with two decimals', () => {
-  assert.match(formatPrice(3500), /R\$\s?35,00/);
-  assert.match(formatPrice(1250), /R\$\s?12,50/);
-  assert.match(formatPrice(0), /R\$\s?0,00/);
+test('formatPrice renders BRL with explicit locale (pure, no navigator)', () => {
+  assert.match(formatPrice(3500, 'BRL', 'pt-BR'), /R\$\s?35,00/);
+  assert.match(formatPrice(1250, 'BRL', 'pt-BR'), /R\$\s?12,50/);
+  assert.match(formatPrice(0, 'BRL', 'pt-BR'), /R\$\s?0,00/);
+});
+
+test('formatPrice is locale/currency parametrized (global-first)', () => {
+  assert.match(formatPrice(3500, 'USD', 'en-US'), /\$35\.00/);
+  assert.match(formatPrice(3500, 'EUR', 'de-DE'), /35,00\s?€/);
+  assert.match(formatPrice(3500, 'BRL', 'pt-BR'), /R\$\s?35,00/);
+  assert.doesNotMatch(formatPrice(3500, 'USD', 'en-US'), /R\$/);
+  assert.equal(formatPrice(123456, 'JPY', 'ja-JP'), '￥123,456');
+  // unknown currency falls back safely instead of throwing
+  assert.ok(formatPrice(100, 'XXX', 'en-US').length > 0);
 });
 
 test('parseCommaDecimal round-trips pt-BR', () => {

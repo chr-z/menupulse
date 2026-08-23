@@ -1,4 +1,4 @@
-// MenuPulse — QR digital menu logic (pure functions, no DOM)
+// MenuPulse — QR digital menu logic (pure functions, no DOM, no browser globals)
 export function slugify(text) {
   return String(text ?? '')
     .normalize('NFKD')
@@ -29,14 +29,28 @@ export function parseCommaDecimal(s) {
   return Number.isFinite(v) ? v : 0;
 }
 
-export function formatPrice(cents) {
-  const loc = new Intl.NumberFormat(navigator.language || 'en-US', {
-    style: 'currency',
-    currency: 'BRL',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-  return loc.format(cents / 100);
+const CURRENCY_META = {
+  USD: { decimals: 2, symbol: '$' },
+  EUR: { decimals: 2, symbol: '€' },
+  GBP: { decimals: 2, symbol: '£' },
+  BRL: { decimals: 2, symbol: 'R$' },
+  JPY: { decimals: 0, symbol: '¥' },
+};
+
+// Pure: currency + locale are explicit params (works in Node tests and any browser locale).
+export function formatPrice(cents, currency = 'BRL', locale = 'en-US') {
+  const meta = CURRENCY_META[currency] || CURRENCY_META.USD;
+  const value = cents / 10 ** meta.decimals;
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: meta.decimals,
+      maximumFractionDigits: meta.decimals,
+    }).format(value);
+  } catch {
+    return `${meta.symbol} ${value.toFixed(meta.decimals)}`;
+  }
 }
 
 export function computeSubtotal(items) {
@@ -57,8 +71,9 @@ export function computeTotal(subtotal_cents, tax_cents, discount_cents = 0) {
 export function catalogRevenueSummary(items, discountPct = 0, taxPct = 10) {
   const subtotal = computeSubtotal(items);
   const tax = computeTax(subtotal, taxPct);
-  const total = computeTotal(subtotal, tax, Math.round((subtotal * discountPct) / 100));
-  return { count: items.length, subtotal, tax, discount: Math.round((subtotal * discountPct) / 100), total };
+  const discount = Math.round((subtotal * discountPct) / 100);
+  const total = computeTotal(subtotal, tax, discount);
+  return { count: items.length, subtotal, tax, discount, total };
 }
 
 export function readShareLink(search) {
