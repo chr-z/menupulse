@@ -1,0 +1,13 @@
+{
+  "name": "menupulse",
+  "version": "1.0.0",
+  "description": "QR digital menu that sells more: browse, cart, WhatsApp checkout. Free, no signup, PWA, i18n.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/",
+    "serve": "npx --yes http-server -p 8080 -c-1 ."
+  },
+  "keywords": ["qr-menu", "digital-menu", "whatsapp", "restaurant", "pwa", "i18n"],
+  "author": "chr-z",
+  "license": "MIT"
+}

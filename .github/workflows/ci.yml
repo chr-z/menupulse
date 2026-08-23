@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run tests
+        run: node --test tests/*.test.js
+      - name: Secret scan (no private keys committed)
+        run: |
+          ! grep -rInE '(BEGIN (RSA|EC|OPENSSH) PRIVATE KEY|ghp_[A-Za-z0-9]{36}|sk-[A-Za-z0-9]{20,})' . --exclude-dir=.git \
+            || (echo 'potential secret found' && exit 1)
+      - name: Validate JSON assets
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('manifest.json','utf8')); console.log('manifest ok')"
+          node -e "for (const f of ['locales/en.json','locales/pt-BR.json']) JSON.parse(require('fs').readFileSync(f,'utf8')); console.log('locales ok')"

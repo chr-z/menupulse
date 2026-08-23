@@ -16,12 +16,13 @@ export function formatBytes(n) {
 }
 
 export function parseCommaDecimal(s) {
-  const t = String(s ?? '').replace(/[^\d.,-]/g, '');
-  const lastC = t.lastIndexOf(','), lastD = t.lastIndexOf('.');
-  if (lastC > -1 && lastD > -1) {
-    if (lastC > lastD) t = t.replace(/\./g, '').replace(',', '.');
+  let t = String(s ?? '').replace(/[^\d.,-]/g, '');
+  const lC = t.lastIndexOf(',');
+  const lD = t.lastIndexOf('.');
+  if (lC > -1 && lD > -1) {
+    if (lC > lD) t = t.replace(/\./g, '').replace(',', '.');
     else t = t.replace(/,/g, '');
-  } else if (lastC > -1) {
+  } else if (lC > -1) {
     t = /,\d{1,2}$/.test(t) ? t.replace(',', '.') : t.replace(/,/g, '');
   }
   const v = Number(t);
@@ -55,7 +56,7 @@ export function computeTotal(subtotal_cents, tax_cents, discount_cents = 0) {
 
 export function catalogRevenueSummary(items, discountPct = 0, taxPct = 10) {
   const subtotal = computeSubtotal(items);
-  const tax = computeTax(subtotal, discountPct);
+  const tax = computeTax(subtotal, taxPct);
   const total = computeTotal(subtotal, tax, Math.round((subtotal * discountPct) / 100));
   return { count: items.length, subtotal, tax, discount: Math.round((subtotal * discountPct) / 100), total };
 }
@@ -77,4 +78,20 @@ export function buildShareLink(baseUrl, pageData) {
   const b64 = btoa(unescape(encodeURIComponent(json)));
   const clean = baseUrl.replace(/\/+$/, '');
   return `${clean}/?d=${b64}`;
+}
+
+export function normalizePhone(raw) {
+  let s = String(raw ?? '').trim();
+  if (!s) return '';
+  const hasPlus = s.startsWith('+');
+  const d = s.replace(/\D/g, '');
+  const n = !hasPlus && d.length <= 11 ? '55' + d : d;
+  return n ? '+' + n : '';
+}
+
+export function waLink(phone, text) {
+  if (!phone) return null;
+  const base = `https://wa.me/${phone.replace(/\D/g, '')}`;
+  const msg = text ? `?text=${encodeURIComponent(text)}` : '';
+  return base + msg;
 }
