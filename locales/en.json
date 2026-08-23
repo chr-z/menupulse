@@ -1,0 +1,46 @@
+{
+  "nav": { "editor": "Editor", "preview": "Preview", "language": "Language" },
+  "brand": { "tagline": "QR digital menu that sells more." },
+  "hero": {
+    "title": "One QR, infinite orders — built to sell more",
+    "subtitle": "A digital menu page with WhatsApp order button, item catalog, and shareable link. Free, no signup, works offline."
+  },
+  "form": {
+    "heading": "Your menu",
+    "displayName": "Restaurant name",
+    "displayNamePh": "e.g. Pizza Place",
+    "bio": "Short description",
+    "bioPh": "Open since 2019 · best pizza in town",
+    "phone": "WhatsApp number",
+    "phonePh": "+55 11 91234-5678",
+    "ctaText": "Order button",
+    "ctaTextPh": "Fazer pedido",
+    "prefill": "Pre-filled message",
+    "prefillPh": "Olá, quero fazer um pedido.",
+    "currency": "Currency",
+    "discountPct": "Discount %",
+    "discountHint": "Applied to whole order.",
+    "addItem": "Add item",
+    "itemFields": {
+      "name": "Item name",
+      "price": "Price"
+    },
+    "remove": "Remove",
+    "saveLocal": "Saved locally ✓",
+    "exportJson": "Export JSON",
+    "importJson": "Import JSON",
+    "shareLink": "Copy share link",
+    "copied": "Link copied!"
+  },
+  "preview": {
+    "heading": "Preview",
+    "openTab": "Open preview tab",
+    "items": "items",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "tax": "Tax",
+    "total": "Total",
+    "orderCta": "Order via WhatsApp"
+  },
+  "footer": { "builtBy": "Built by", "privacy": "Everything stays in your browser. No accounts, no tracking." }
+}

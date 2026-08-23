@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MenuPulse — QR Digital Menu</title>
+  <meta name="description" content="QR digital menu with WhatsApp order button and item catalog. Free, no signup, PWA.">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#7c3aed">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#7c3aed"/><path fill="#fff" d="M150 256a106 106 0 0 1 106-106h44v52h-44a54 54 0 1 0 0 108h44v52h-44A106 106 0 0 1 150 256z"/></svg>
+      MenuPulse
+    </div>
+    <label class="lang-wrap" style="margin:0">
+      <span data-i18n="nav.language">Language</span>
+      <select class="lang" id="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="pt-BR">Português (BR)</option>
+      </select>
+    </label>
+  </header>
+
+  <section class="hero">
+    <h1 data-i18n="hero.title"></h1>
+    <p data-i18n="hero.subtitle"></p>
+  </section>
+
+  <main class="layout">
+    <form class="card" id="editor" onsubmit="return false">
+      <h2 data-i18n="form.heading">Your menu</h2>
+
+      <label class="grow"><span data-i18n="form.displayName">Restaurant name</span>
+        <input id="f-name" type="text" autocomplete="off">
+      </label>
+      <label class="grow"><span data-i18n="form.bio">Short description</span>
+        <input id="f-bio" type="text">
+      </label>
+      <div class="row">
+        <label class="grow"><span data-i18n="form.phone">WhatsApp number</span>
+          <input id="f-phone" type="tel" placeholder="+55 11 91234-5678">
+        </label>
+        <label style="max-width:130px"><span data-i18n="form.currency">Currency</span>
+          <select id="f-currency">
+            <option value="BRL">BRL R$</option>
+            <option value="USD">USD $</option>
+            <option value="EUR">EUR €</option>
+            <option value="GBP">GBP £</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label class="grow"><span data-i18n="form.ctaText">Order button text</span>
+          <input id="f-cta" type="text">
+        </label>
+        <label style="max-width:110px"><span data-i18n="form.discountPct">Discount %</span>
+          <input id="f-discount" type="number" min="0" max="100" value="0">
+        </label>
+      </div>
+
+      <h2 style="font-size:.95rem" data-i18n="preview.heading">Items</h2>
+      <div id="items"></div>
+      <button type="button" class="btn ghost" id="btn-add-item">+ Add item</button>
+
+      <div class="row" style="margin-top:14px">
+        <button type="button" class="btn" id="btn-share">🔗 Share link</button>
+        <button type="button" class="btn ghost" id="btn-export">Export JSON</button>
+        <label class="btn ghost" style="margin:0">Import JSON
+          <input id="btn-import" type="file" accept="application/json" hidden>
+        </label>
+      </div>
+      <p><span class="save-indicator" id="save-indicator" hidden>Saved ✓</span></p>
+    </form>
+
+    <section class="card">
+      <h2 data-i18n="preview.openTab">Preview</h2>
+      <div class="phone" aria-label="phone preview">
+        <div class="avatar" id="pv-avatar">M</div>
+        <h3 id="pv-name">Restaurant</h3>
+        <p id="pv-bio"></p>
+        <ul id="pv-items"></ul>
+        <div class="totals">
+          <div><span data-i18n="preview.subtotal">Subtotal</span> <b id="pv-subtotal">—</b></div>
+          <div><span data-i18n="preview.tax">Tax</span> <b id="pv-tax">—</b></div>
+          <div class="discount-line"><span data-i18n="preview.discount">Discount</span> <b id="pv-discount">—</b></div>
+          <div class="total"><span data-i18n="preview.total">Total</span> <b id="pv-total">—</b></div>
+        </div>
+        <a id="pv-wa" class="btn wa" href="#" target="_blank" rel="noopener">Order via WhatsApp</a>
+        <p class="hint" id="pv-count"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p data-i18n="footer.privacy"></p>
+    <p>Built by <a href="https://github.com/chr-z">@chr-z</a> · <a href="https://github.com/chr-z/menupulse">source</a></p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+    }
+    import('./js/i18n.js').then((i18n) => {
+      const sel = document.getElementById('lang-select');
+      sel.value = i18n.currentLanguage();
+      sel.addEventListener('change', () => i18n.setLanguage(sel.value).then(() => location.reload()));
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "MenuPulse — QR Digital Menu",
+  "short_name": "MenuPulse",
+  "description": "Restaurant QR digital menu: browse items, add to cart, checkout with WhatsApp. Free, no signup, PWA.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#7c3aed",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["food", "ordering", "productivity"],
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

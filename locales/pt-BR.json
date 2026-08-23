@@ -1,0 +1,46 @@
+{
+  "nav": { "editor": "Editor", "preview": "Pré-visualização", "language": "Idioma" },
+  "brand": { "tagline": "Cardápio QR digital que vende mais." },
+  "hero": {
+    "title": "Um QR, pedidos infinitos — feito para vender mais",
+    "subtitle": "Uma página de cardápio digital com botão de WhatsApp, catálogo de itens e link para compartilhar. Grátis, sem cadastro, funciona offline."
+  },
+  "form": {
+    "heading": "Seu cardápio",
+    "displayName": "Nome do restaurante",
+    "displayNamePh": "ex.: Pizza Place",
+    "bio": "Descrição curta",
+    "bioPh": "Desde 2019 · melhor pizza da região",
+    "phone": "Número do WhatsApp",
+    "phonePh": "+55 11 91234-5678",
+    "ctaText": "Texto do botão",
+    "ctaTextPh": "Fazer pedido",
+    "prefill": "Mensagem pré-preenchida",
+    "prefillPh": "Olá, quero fazer um pedido.",
+    "currency": "Moeda",
+    "discountPct": "Desconto %",
+    "discountHint": "Aplicado ao total do pedido.",
+    "addItem": "Adicionar item",
+    "itemFields": {
+      "name": "Nome do item",
+      "price": "Preço"
+    },
+    "remove": "Remover",
+    "saveLocal": "Salvo localmente ✓",
+    "exportJson": "Exportar JSON",
+    "importJson": "Importar JSON",
+    "shareLink": "Copiar link de compartilhamento",
+    "copied": "Link copiado!"
+  },
+  "preview": {
+    "heading": "Pré-visualização",
+    "openTab": "Abrir aba de pré-visualização",
+    "items": "itens",
+    "subtotal": "Subtotal",
+    "discount": "Desconto",
+    "tax": "Taxa",
+    "total": "Total",
+    "orderCta": "Pedir pelo WhatsApp"
+  },
+  "footer": { "builtBy": "Criado por", "privacy": "Tudo fica no seu navegador. Sem contas, sem rastreamento." }
+}
