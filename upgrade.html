@@ -118,7 +118,7 @@
     </div>
 
     <footer class="footnote">
-      <p>R$19/mês — um único pedido novo por semana já paga o mês inteiro. Pagamento processado pelo <strong>Asaas</strong> (PIX ou cartão).
+      <p>Assinatura mensal recorrente: <strong>R$19/mês</strong> cobrados automaticamente via Asaas (PIX ou cartão) até você cancelar — um único pedido novo por semana já paga o mês inteiro.
         <a href="#" id="link-guarantee">7 dias de garantia</a>.</p>
       <p>Já pagou e está em outro dispositivo? <a href="#" id="link-recover">Recuperar licença</a>.</p>
     </footer>
@@ -135,10 +135,9 @@
   <!-- recuperação de licença -->
   <dialog id="dlg-recover">
     <h3 style="margin-top:0">Recuperar licença</h3>
-    <p style="font-size:.9rem;color:var(--muted)">Informe o email da compra e o ID do pagamento
-       (vem no final da URL de retorno depois de pagar).</p>
+    <p style="font-size:.9rem;color:var(--muted)">Informe o email da compra — a licença mais recente é recuperada na hora. O ID do pagamento é opcional.</p>
     <input type="email" id="rec-email" placeholder="seu@email.com" autocomplete="email" />
-    <input type="text" id="rec-payment" placeholder="ID do pagamento (pay_...)" spellcheck="false" />
+    <input type="text" id="rec-payment" placeholder="ID do pagamento (opcional — só o email já resolve)" spellcheck="false" />
     <p class="status" id="rec-status"></p>
     <menu>
       <button class="js-close">Cancelar</button>
@@ -250,8 +249,32 @@
         var pid = $('#rec-payment').value.trim();
         var st = $('#rec-status');
         st.classList.remove('pay-error');
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || !/^[A-Za-z0-9_-]+$/.test(pid)) {
-          st.textContent = 'Preenche email e ID corretos.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+          st.textContent = 'Preenche um email válido.';
+          st.classList.add('pay-error');
+          return;
+        }
+        if (!pid) {
+          fetch(API + '/api/license-latest?key=' + encodeURIComponent(email) + '&product=' + encodeURIComponent(PRODUCT))
+            .then(function (r) { return r.json(); })
+            .then(function (out) {
+              if (out.found && out.license && out.paymentId) {
+                localStorage.setItem('paym_pending_' + PRODUCT, JSON.stringify({ paymentId: out.paymentId, email: email, startedAt: Date.now(), mode: 'subscription' }));
+                localStorage.setItem('paym_entitlement_' + PRODUCT, JSON.stringify({ paymentId: out.paymentId, email: email }));
+                location.reload();
+              } else {
+                st.textContent = 'Não encontramos licença para esse email neste produto.';
+                st.classList.add('pay-error');
+              }
+            })
+            .catch(function () {
+              st.textContent = 'Sem conexão — tenta de novo.';
+              st.classList.add('pay-error');
+            });
+          return;
+        }
+        if (!/^[A-Za-z0-9_-]+$/.test(pid)) {
+          st.textContent = 'ID do pagamento inválido (ou deixe vazio e use só o email).';
           st.classList.add('pay-error');
           return;
         }
