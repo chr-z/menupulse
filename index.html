@@ -23,7 +23,8 @@
         <option value="pt-BR">Português (BR)</option>
       </select>
     </label>
-  </header>
+      <a href="upgrade.html" data-i18n="nav.pro" style="margin-left:.6rem;padding:.38rem .85rem;border-radius:8px;background:#7c3aed;color:#fff;font-weight:700;text-decoration:none;font-size:.85rem;white-space:nowrap">Pro</a>
+</header>
 
   <section class="hero">
     <h1 data-i18n="hero.title"></h1>
@@ -114,5 +115,10 @@
       sel.addEventListener('change', () => i18n.setLanguage(sel.value).then(() => location.reload()));
     });
   </script>
+  <script>
+    // Pay Module: CONFIG antes do pay.js (o IIFE lê na execução).
+    window.PAY_CONFIG = { product: 'menupulse', plan: 'pro', apiBase: 'https://chrz-dev.pages.dev', verifyKey: '' };
+  </script>
+  <script src="js/pay.js"></script>
 </body>
 </html>

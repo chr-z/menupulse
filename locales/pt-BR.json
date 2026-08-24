@@ -1,4 +1,5 @@
 {
+  "nav.pro": "Assinar Pro",
   "nav": { "editor": "Editor", "preview": "Pré-visualização", "language": "Idioma" },
   "brand": { "tagline": "Cardápio QR digital que vende mais." },
   "hero": {

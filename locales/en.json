@@ -1,4 +1,5 @@
 {
+  "nav.pro": "Go Pro",
   "nav": { "editor": "Editor", "preview": "Preview", "language": "Language" },
   "brand": { "tagline": "QR digital menu that sells more." },
   "hero": {
